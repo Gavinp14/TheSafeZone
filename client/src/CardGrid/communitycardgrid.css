@@ -1,8 +1,0 @@
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px; /* Adjust the gap between cards */
-    padding: 0 20px;
-  }
-  
-  

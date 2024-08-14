@@ -1,0 +1,16 @@
+.card-grid {
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px; /* Adjust the gap between cards */
+    padding: 0 20px;
+  }
+  
+  .search-bar {
+    border-radius: 8px; /* Slightly rounded corners */
+    border: 2px solid #d3d3d3; /* Light grey border */
+    padding-left: 10px; /* Add padding to move text to the right */
+    box-shadow: none; /* Remove shadow if any */
+  }
+  

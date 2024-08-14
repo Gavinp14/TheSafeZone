@@ -1,14 +1,17 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Header from "./Header";
-import CommunityCardGrid from "./CardGrid/CommunityCardGrid";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Forum from "./pages/Forum";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <CommunityCardGrid />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/forums/:id" element={<Forum />} />
+      </Routes>
+    </Router>
   );
 }
 
