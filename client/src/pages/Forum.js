@@ -1,5 +1,4 @@
 import React from "react";
-import Postform from "../components/PostForm/Postform";
 import ThreadGrid from "../components/ThreadGrid/ThreadGrid";
 import { useParams } from "react-router-dom";
 
@@ -37,7 +36,7 @@ function Forum() {
   const title = subforumData[id];
 
   return (
-    <div className="text-center mt-3">
+    <div className="mt-3">
       <h1>{title}</h1>
       <ThreadGrid />
     </div>

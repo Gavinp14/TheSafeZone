@@ -1,0 +1,28 @@
+.thread-card {
+    transition: all 0.3s ease; /* Smooth transition */
+    overflow: hidden; /* Hide overflow */
+  }
+  
+  .thread-card.expanded {
+    /* Increase height or padding when expanded */
+    height: auto; /* Set this to a fixed height if needed */
+  }
+
+  .replies-dropdown:hover{
+    color:lightblue;
+  }
+  
+  .dropdown-content {
+    display: block;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  /* Optional: Add padding when expanded */
+  .thread-card.expanded .card-body {
+    padding-bottom: 40px; /* Adjust as necessary */
+  }
+  
