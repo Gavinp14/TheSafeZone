@@ -46,7 +46,7 @@ function CreateThreadModal({ isOpen, onRequestClose, onAddThread }) {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="username" className="form-label">
-            Username
+            Display Name
           </label>
           <input
             type="text"

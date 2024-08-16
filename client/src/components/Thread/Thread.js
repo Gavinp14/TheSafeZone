@@ -33,6 +33,9 @@ function Thread({ id, forum, username, title, text, timestamp, replies }) {
               icon={isDropdownOpen ? faChevronUp : faChevronDown}
               className="dropdown-icon"
             />
+            <button className="btn btn-light text-info position-absolute bottom-o end-0 m-3">
+              Reply
+            </button>
           </div>
           {isDropdownOpen && (
             <div className="dropdown-content mt-2">
@@ -40,9 +43,6 @@ function Thread({ id, forum, username, title, text, timestamp, replies }) {
             </div>
           )}
         </div>
-        <p className="card-timestamp position-absolute bottom-0 end-0 m-3">
-          {timestamp}
-        </p>
       </div>
     </div>
   );

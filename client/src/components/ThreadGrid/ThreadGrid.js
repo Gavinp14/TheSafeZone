@@ -117,9 +117,13 @@ function ThreadGrid() {
 
   return (
     <>
+      <p>
+        There are {threadData.length} threads in this forum, you are not alone.
+      </p>
+
       <button
         type="button"
-        className="btn btn-info text-white mt-3"
+        className="btn btn-info text-white mt-2"
         onClick={openModal}
         onAddThread={handleAddThread}
       >
