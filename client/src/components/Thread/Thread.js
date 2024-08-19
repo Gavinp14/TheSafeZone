@@ -1,13 +1,40 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import Reply from "../Reply/Reply";
+import ReplyModal from "../ReplyModal/ReplyModal";
 import "./thread.css";
 
-function Thread({ id, forum, username, title, text, timestamp, replies }) {
+const dummyData = [
+  {
+    id: "1",
+    username: "JohnDoe123",
+    text: "I totally agree with your point about mental health resources being underfunded.",
+    date: "2024-08-17",
+  },
+  // Other dummy data...
+];
+
+function Thread({ id, forum, username, title, text, replies, timestamp }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [replyData, setReplyData] = useState(dummyData);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState);
+  };
+
+  const handleAddReply = (newReply) => {
+    setReplyData((prevData) => [...prevData, newReply]);
+    setIsModalOpen(false);
   };
 
   return (
@@ -18,7 +45,7 @@ function Thread({ id, forum, username, title, text, timestamp, replies }) {
     >
       <div className="card-body d-flex flex-column position-relative p-3">
         <p className="forum position-absolute top-0 start-0 m-3">{forum}</p>
-        <p className="card-username position-absolute top-0 end-0 m-3">
+        <p className="card-username position-absolute top-0 end-0 m-3 text-primary">
           by {username}
         </p>
         <div className="content">
@@ -33,17 +60,33 @@ function Thread({ id, forum, username, title, text, timestamp, replies }) {
               icon={isDropdownOpen ? faChevronUp : faChevronDown}
               className="dropdown-icon"
             />
-            <button className="btn btn-light text-info position-absolute bottom-o end-0 m-3">
-              Reply
-            </button>
           </div>
           {isDropdownOpen && (
             <div className="dropdown-content mt-2">
-              <p>Hello</p>
+              {replyData.map((reply) => (
+                <Reply
+                  key={reply.id}
+                  username={reply.username}
+                  text={reply.text}
+                  date={reply.date}
+                />
+              ))}
             </div>
           )}
+          {/* Move the button here and use the absolute positioning */}
+          <button className="reply-button btn text-info" onClick={openModal}>
+            Reply
+          </button>
         </div>
       </div>
+
+      {/* Reply Modal */}
+      <ReplyModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        onAddReply={handleAddReply}
+        threadId={id}
+      />
     </div>
   );
 }

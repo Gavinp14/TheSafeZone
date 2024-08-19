@@ -117,9 +117,7 @@ function ThreadGrid() {
 
   return (
     <>
-      <p>
-        There are {threadData.length} threads in this forum, you are not alone.
-      </p>
+      <p>There are {threadData.length} threads in this forum</p>
 
       <button
         type="button"

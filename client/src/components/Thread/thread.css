@@ -14,17 +14,11 @@
     color:lightblue;
   }
   
-  .dropdown-content {
-    display: block;
-    background-color: #f1f1f1;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  
   /* Optional: Add padding when expanded */
   .thread-card.expanded .card-body {
     padding-bottom: 40px; /* Adjust as necessary */
   }
-  
+
+  .reply-button:hover{
+    color: blue;
+  }
