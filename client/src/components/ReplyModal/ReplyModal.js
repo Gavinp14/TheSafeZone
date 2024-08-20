@@ -2,26 +2,32 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import "./replymodal.css";
 
+Modal.setAppElement("#root"); // For accessibility
+
 function ReplyModal({ isOpen, onRequestClose, onAddReply, threadId }) {
   const [username, setUsername] = useState("Anonymous");
   const [text, setText] = useState("");
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newReply = {
-      id: Date.now(), // Generate a unique ID for the new reply
-      threadId, // Pass the thread ID this reply is associated with
       username: username || "Anonymous",
       text,
-      date: new Date().toISOString(), // Current date and time
+      date: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
     };
-    // Pass the new reply data to the parent
-    onAddReply(newReply);
-    // Reset form fields
-    setUsername("Anonymous");
-    setText("");
-    onRequestClose(); // Close the modal after submission
+
+    try {
+      // Pass the new reply data to the parent
+      await onAddReply(newReply, threadId);
+      // Reset form fields
+      setUsername("Anonymous");
+      setText("");
+      onRequestClose(); // Close the modal after submission
+    } catch (error) {
+      console.error("Error adding reply: ", error);
+    }
   };
 
   return (

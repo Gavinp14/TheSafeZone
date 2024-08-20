@@ -4,33 +4,40 @@ import "./createthreadmodal.css";
 
 Modal.setAppElement("#root"); // For accessibility
 
-function CreateThreadModal({ isOpen, onRequestClose, onAddThread }) {
-  const [forum, setForum] = useState("");
+function CreateThreadModal({
+  isOpen,
+  onRequestClose,
+  onAddThread,
+  forumTitle,
+}) {
   const [username, setUsername] = useState("Anonymous");
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [date, setDate] = useState("");
+
+  const formatDate = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1; // Months are zero-based
+    const day = today.getDate();
+    const year = today.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const newThread = {
-      id: Date.now(), // Generate a unique ID for the new thread
-      forum: "Eating Disorders", //dummy forum
+      forumTitle,
       username,
       title,
       text,
-      timestamp: "2024-08-19", //dummy data
-      replies: 0, //dummy data
+      timestamp: formatDate(),
+      replies: 0,
     };
     // Pass the new thread data to the parent
     onAddThread(newThread);
-    // Reset form fields
-    setForum("");
     setUsername("Anonymous");
     setTitle("");
     setText("");
-    setDate("");
     onRequestClose(); // Close the modal after submission
   };
 
@@ -42,7 +49,7 @@ function CreateThreadModal({ isOpen, onRequestClose, onAddThread }) {
       className="modal-content"
       overlayClassName="modal-overlay"
     >
-      <h2>Create a New Thread</h2>
+      <h2>Create a New Thread in {forumTitle}</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="username" className="form-label">

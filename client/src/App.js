@@ -9,7 +9,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/forums/:id" element={<Forum />} />
+        <Route path="/forums/:forumId" element={<Forum />} />
       </Routes>
     </Router>
   );

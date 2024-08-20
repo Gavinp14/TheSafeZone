@@ -1,17 +1,47 @@
-import React, { useState } from "react";
+// src/components/CardGrid/CommunityCardGrid.js
+import React, { useState, useEffect } from "react";
 import CommunityCard from "../Card/CommunityCard";
+import { db, collection, getDocs } from "../../firebase";
 import "./communitycardgrid.css";
 
-function CommunityCardGrid({ forums }) {
+function CommunityCardGrid() {
+  const [forums, setForums] = useState([]);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Fetch forums from Firestore
+  useEffect(() => {
+    const fetchForums = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "forums"));
+        const forumsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setForums(forumsData);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchForums();
+  }, []);
+
+  // Filter forums based on search query
+  const filteredForums = forums.filter((forum) =>
+    forum.title.toLowerCase().includes(query.toLowerCase())
+  );
+
+  // Handle input changes for search
   const handleInputChange = (event) => {
     setQuery(event.target.value);
   };
 
-  const filteredForums = forums.filter((forum) =>
-    forum.title.toLowerCase().includes(query.toLowerCase())
-  );
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="container">
@@ -21,7 +51,7 @@ function CommunityCardGrid({ forums }) {
         placeholder="Search for a Topic"
         value={query}
         onChange={handleInputChange}
-      ></input>
+      />
       <div className="card-grid mt-5 mb-5">
         {filteredForums.length > 0 ? (
           filteredForums.map((forum) => (

@@ -1,24 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Reply from "../Reply/Reply";
 import ReplyModal from "../ReplyModal/ReplyModal";
+import { db, collection, doc, getDocs, addDoc } from "../../firebase";
 import "./thread.css";
-
-const dummyData = [
-  {
-    id: "1",
-    username: "JohnDoe123",
-    text: "I totally agree with your point about mental health resources being underfunded.",
-    date: "2024-08-17",
-  },
-  // Other dummy data...
-];
 
 function Thread({ id, forum, username, title, text, replies, timestamp }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [replyData, setReplyData] = useState(dummyData);
+  const [replyData, setReplyData] = useState([]);
+
+  // Fetch replies when the component mounts or when the thread ID changes
+  useEffect(() => {
+    const fetchReplies = async () => {
+      try {
+        const repliesSnapshot = await getDocs(
+          collection(db, `forums/${forum}/threads/${id}/replies`)
+        );
+        const repliesData = repliesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setReplyData(repliesData);
+      } catch (error) {
+        console.error("Error fetching replies: ", error);
+      }
+    };
+
+    fetchReplies();
+  }, [id, forum]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -32,9 +43,22 @@ function Thread({ id, forum, username, title, text, replies, timestamp }) {
     setIsDropdownOpen((prevState) => !prevState);
   };
 
-  const handleAddReply = (newReply) => {
-    setReplyData((prevData) => [...prevData, newReply]);
-    setIsModalOpen(false);
+  const handleAddReply = async (newReply, threadId) => {
+    try {
+      // Add the new reply to Firestore under the specific thread's replies collection
+      await addDoc(
+        collection(db, `forums/${forum}/threads/${threadId}/replies`),
+        newReply
+      );
+
+      // Update local state to include the new reply
+      setReplyData((prevData) => [...prevData, newReply]);
+
+      // Close the modal
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error adding reply: ", error);
+    }
   };
 
   return (
@@ -55,7 +79,7 @@ function Thread({ id, forum, username, title, text, replies, timestamp }) {
             className="replies-dropdown d-flex align-items-center"
             onClick={toggleDropdown}
           >
-            <p className="card-replies mt-2 me-2">{replies} replies</p>
+            <p className="card-replies mt-2 me-2">{replyData.length} replies</p>
             <FontAwesomeIcon
               icon={isDropdownOpen ? faChevronUp : faChevronDown}
               className="dropdown-icon"
@@ -73,7 +97,6 @@ function Thread({ id, forum, username, title, text, replies, timestamp }) {
               ))}
             </div>
           )}
-          {/* Move the button here and use the absolute positioning */}
           <button className="reply-button btn text-info" onClick={openModal}>
             Reply
           </button>
