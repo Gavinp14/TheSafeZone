@@ -22,3 +22,7 @@
   .reply-button:hover{
     color: blue;
   }
+
+  .user-actions:hover{
+    cursor: pointer;
+  }

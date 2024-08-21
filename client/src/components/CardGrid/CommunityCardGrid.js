@@ -45,13 +45,16 @@ function CommunityCardGrid() {
 
   return (
     <div className="container">
-      <input
-        className="search-bar"
-        type="text"
-        placeholder="Search for a Topic"
-        value={query}
-        onChange={handleInputChange}
-      />
+      <div className="d-flex justify-content-center gap-3">
+        <input
+          className="search-bar w-25"
+          type="text"
+          placeholder="Search for a Forum"
+          value={query}
+          onChange={handleInputChange}
+        />
+        <button className="btn btn-success text-white">Create Forum</button>
+      </div>
       <div className="card-grid mt-5 mb-5">
         {filteredForums.length > 0 ? (
           filteredForums.map((forum) => (

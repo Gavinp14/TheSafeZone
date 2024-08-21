@@ -1,70 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Thread from "../Thread/Thread";
 import CreateThreadModal from "../CreateThreadModal/CreateThreadModal";
-import { db, collection, doc, getDoc, addDoc, getDocs } from "../../firebase";
 import "./threadgrid.css";
 
-function ThreadGrid({ forumId }) {
-  const [threads, setThreads] = useState([]);
+// Dummy data for threads and forum title
+const dummyThreads = [
+  {
+    id: "1",
+    username: "User1",
+    title: "First Thread",
+    text: "This is the first thread.",
+    replies: [],
+    timestamp: "2024-08-19",
+  },
+  {
+    id: "2",
+    username: "User2",
+    title: "Second Thread",
+    text: "This is the second thread.",
+    replies: [],
+    timestamp: "2024-08-20",
+  },
+  // Add more dummy threads as needed
+];
+
+const dummyForumTitle = "Sample Forum Title";
+
+function ThreadGrid() {
+  const [threads, setThreads] = useState(dummyThreads);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [forumTitle, setForumTitle] = useState("");
 
-  // Fetch threads and forum title from Firestore when the component mounts or forumId changes
-  useEffect(() => {
-    const fetchThreadsAndTitle = async () => {
-      setLoading(true);
-      try {
-        // Fetch threads
-        const threadsSnapshot = await getDocs(
-          collection(db, `forums/${forumId}/threads`)
-        );
-        const threadsData = threadsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setThreads(threadsData);
-
-        // Fetch forum title
-        const forumDocRef = doc(db, "forums", forumId);
-        const forumDoc = await getDoc(forumDocRef);
-        if (forumDoc.exists()) {
-          setForumTitle(forumDoc.data().title);
-        } else {
-          console.error("No such forum document!");
-        }
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (forumId) {
-      fetchThreadsAndTitle();
-    }
-  }, [forumId]);
-
-  // Handle adding a new thread
-  const handleAddThread = async (newThread) => {
+  // Dummy function to simulate adding a new thread
+  const handleAddThread = (newThread) => {
     try {
-      // Add the new thread document to Firestore
-      const threadRef = await addDoc(
-        collection(db, `forums/${forumId}/threads`),
-        newThread
-      );
-
-      // Create an empty 'replies' subcollection for this thread
-      await addDoc(
-        collection(db, `forums/${forumId}/threads/${threadRef.id}/replies`),
-        {}
-      );
-
-      // Update the local state to include the new thread
+      // Simulate adding the new thread to local state
       setThreads((prevThreads) => [
         ...prevThreads,
-        { id: threadRef.id, ...newThread }, // Use the Firestore-generated ID
+        { id: (prevThreads.length + 1).toString(), ...newThread },
       ]);
     } catch (error) {
       setError(error);
@@ -86,7 +60,7 @@ function ThreadGrid({ forumId }) {
 
   return (
     <>
-      <h1>{forumTitle}</h1> {/* Display forum title */}
+      <h1>{dummyForumTitle}</h1> {/* Display forum title */}
       <p>There are {threads.length} threads in this forum</p>
       <button
         type="button"
@@ -99,7 +73,7 @@ function ThreadGrid({ forumId }) {
         {threads.map((thread) => (
           <Thread
             key={thread.id}
-            forum={forumTitle}
+            forum={dummyForumTitle}
             username={thread.username}
             title={thread.title}
             text={thread.text}
@@ -112,7 +86,7 @@ function ThreadGrid({ forumId }) {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         onAddThread={handleAddThread}
-        forumTitle={forumTitle}
+        forumTitle={dummyForumTitle}
       />
     </>
   );
