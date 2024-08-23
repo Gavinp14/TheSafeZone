@@ -1,14 +1,29 @@
 // src/components/CardGrid/CommunityCardGrid.js
 import React, { useState, useEffect } from "react";
 import CommunityCard from "../Card/CommunityCard";
+import CreateForumModal from "../CreateForumModal/CreateForumModal";
 import { db, collection, getDocs } from "../../firebase";
 import "./communitycardgrid.css";
 
 function CommunityCardGrid() {
   const [forums, setForums] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const createForum = () => {
+    console.log("Forum created");
+    closeModal();
+  };
 
   // Fetch forums from Firestore
   useEffect(() => {
@@ -44,32 +59,41 @@ function CommunityCardGrid() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="container">
-      <div className="d-flex justify-content-center gap-3">
-        <input
-          className="search-bar w-25"
-          type="text"
-          placeholder="Search for a Forum"
-          value={query}
-          onChange={handleInputChange}
-        />
-        <button className="btn btn-success text-white">Create Forum</button>
+    <>
+      <div className="container">
+        <div className="d-flex justify-content-center gap-3">
+          <input
+            className="search-bar w-25"
+            type="text"
+            placeholder="Search for a Forum"
+            value={query}
+            onChange={handleInputChange}
+          />
+          <button className="btn btn-success text-white" onClick={openModal}>
+            Create Forum
+          </button>
+        </div>
+        <div className="card-grid mt-5 mb-5">
+          {filteredForums.length > 0 ? (
+            filteredForums.map((forum) => (
+              <CommunityCard
+                key={forum.id}
+                id={forum.id}
+                title={forum.title}
+                postCount={forum.postCount}
+              />
+            ))
+          ) : (
+            <p>No topics found</p>
+          )}
+        </div>
       </div>
-      <div className="card-grid mt-5 mb-5">
-        {filteredForums.length > 0 ? (
-          filteredForums.map((forum) => (
-            <CommunityCard
-              key={forum.id}
-              id={forum.id}
-              title={forum.title}
-              postCount={forum.postCount}
-            />
-          ))
-        ) : (
-          <p>No topics found</p>
-        )}
-      </div>
-    </div>
+      <CreateForumModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        onCreateForum={createForum}
+      />
+    </>
   );
 }
 

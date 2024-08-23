@@ -1,10 +1,12 @@
-// src/pages/MyProfile.js
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import DeleteAccountModal from "../components/DeleteAccountModal/DeleteAccountModal";
+import MyPosts from "../components/MyPosts/MyPosts";
 
 function MyProfile() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dummyData = {
     name: "Gavin",
     email: "gavporter14@gmail.com",
@@ -18,10 +20,24 @@ function MyProfile() {
     navigate("/home");
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteAccount = () => {
+    // Handle account deletion logic here
+    console.log("Account deleted");
+    closeModal();
+  };
+
   return (
     <>
       <button
-        className="btn btn-info rounded-pill text-white mt-4"
+        className="btn btn-primary rounded-pill text-white mt-4"
         onClick={goBackToHome}
       >
         Back To Home
@@ -50,10 +66,19 @@ function MyProfile() {
             </div>
           </div>
         </div>
-        <button className="btn btn-danger mt-5 rounded-pill w-25">
+        <MyPosts />
+        <button
+          className="btn btn-danger mt-5 rounded-pill w-25"
+          onClick={openModal}
+        >
           Delete Account
         </button>
       </div>
+      <DeleteAccountModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        onDeleteAccount={handleDeleteAccount}
+      />
     </>
   );
 }

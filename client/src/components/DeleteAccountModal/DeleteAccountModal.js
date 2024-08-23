@@ -2,52 +2,30 @@ import React from "react";
 import Modal from "react-modal";
 import "./deleteaccountmodal.css";
 
-function DeleteAccountModal() {
+function DeleteAccountModal({ isOpen, onRequestClose, onDeleteAccount }) {
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      isClosed={onRequestClose}
       contentLabel="Reply Modal"
       className="modal-content"
       overlayClassName="modal-overlay"
     >
-      <h2>Reply to Thread</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="username" className="form-label">
-            Display Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="text" className="form-label">
-            Your Reply
-          </label>
-          <textarea
-            className="form-control"
-            id="text"
-            rows="10"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          ></textarea>
-        </div>
-        <button type="submit" className="btn btn-primary m-3">
-          Submit Reply
-        </button>
+      <h2>Are You Sure You Want to Delete Your Account?</h2>
+      <div className="d-flex flex-row justify-content-center gap-2 mt-3">
         <button
-          type="button"
-          className="btn btn-secondary"
+          className="btn btn-success w-50 rounded-pill"
           onClick={onRequestClose}
         >
           Close
         </button>
-      </form>
+        <button
+          className="btn btn-danger w-50 rounded-pill"
+          onClick={onDeleteAccount}
+        >
+          Delete
+        </button>
+      </div>
     </Modal>
   );
 }
