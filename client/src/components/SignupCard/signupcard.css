@@ -1,0 +1,7 @@
+@media (min-width: 768px) {
+    .signup-card {
+      width: 75%;
+      max-width: 500px;
+      min-width: 300px;
+    }
+  }

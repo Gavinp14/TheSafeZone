@@ -1,9 +1,10 @@
 import React from "react";
 import "./signupcard.css";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function SignupCard() {
   return (
-    <div className="login-card p-5 w-25 rounded shadow-lg bg-white">
+    <div className="signup-card p-5 w-25 rounded shadow-lg bg-white">
       <h2 className="text-center mb-4">Create Account</h2>
       <div className="inputs d-flex flex-column gap-3 mb-4">
         <input className="form-control" type="email" placeholder="Enter Name" />

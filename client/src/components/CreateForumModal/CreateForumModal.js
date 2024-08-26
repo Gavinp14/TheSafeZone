@@ -29,15 +29,13 @@ function CreateForumModal({ isOpen, onRequestClose, onCreateForum }) {
             className="form-control"
             id="forumDescription"
             placeholder="Enter Forum Description"
-            maxLength={200}
+            maxLength={400}
             rows="10"
             value={forumDescription}
             onChange={(e) => setForumDescription(e.target.value)}
           ></textarea>
         </div>
-        <button type="submit" className="btn btn-primary m-3">
-          Submit Reply
-        </button>
+        <button type="submit" className="btn btn-primary m-3"></button>
         <button
           type="button"
           className="btn btn-secondary"

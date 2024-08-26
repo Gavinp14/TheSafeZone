@@ -9,6 +9,7 @@ import {
   getDoc,
   doc,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -23,6 +24,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 const analytics = getAnalytics(app);
 
